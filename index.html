@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDIBOT | INSPIRE MANAK Innovation Portal</title>
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --primary-light: #4facfe;
+            --primary-dark: #0088cc;
+            --accent: #00ff87;
+            --accent-glow: rgba(0, 255, 135, 0.3);
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-body: #060b14;
+            --bg-card: rgba(15, 25, 45, 0.85);
+            --bg-inner-card: #0a1120;
+            --bg-header: radial-gradient(circle at center, #132238 0%, #060b14 100%);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: rgba(0, 242, 254, 0.3);
+            --border-subtle: #1e293b;
+            --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-inner-card: #f8fafc;
+            --bg-header: linear-gradient(135deg, #0088cc 0%, #060b14 100%);
+            --text-main: #0b1320;
+            --text-muted: #4a5568;
+            --border-color: #cbd5e1;
+            --border-subtle: #cbd5e1;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
+            background-size: 35px 35px;
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Glassmorphism Navigation Bar */
+        nav {
+            background: rgba(6, 11, 20, 0.9);
+            border-bottom: 1px solid rgba(0, 242, 254, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-logo svg {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
+        }
+
+        /* Nav Slider Controls Wrapper */
+        .nav-slider-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex: 1;
+            max-width: 980px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 4px 8px;
+        }
+
+        .slide-btn {
+            background: rgba(0, 242, 254, 0.15);
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            font-size: 1.2rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .slide-btn:hover {
+            background: var(--primary);
+            color: #060b14;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            align-items: center;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 2px 8px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            width: 100%;
+        }
+
+        .nav-links::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-links li {
+            flex-shrink: 0;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background-color: rgba(0, 242, 254, 0.1);
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        .nav-links a.active {
+            color: #060b14;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            font-weight: 800;
+            box-shadow: 0 0 18px rgba(0, 242, 254, 0.5);
+            border-color: transparent;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .page-view {
+            display: none;
+            animation: fadeIn 0.35s ease-in-out;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: var(--bg-header);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 24px;
+            text-align: center;
+            margin-bottom: 35px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-container-hero {
+            max-width: 950px;
+            margin: 0 auto 20px auto;
+        }
+
+        .logo-container-hero svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0px 10px 25px rgba(0, 242, 254, 0.35)) drop-shadow(0px 0px 15px rgba(0, 255, 135, 0.25));
+        }
+
+        .hero-banner p.description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 850px;
+            margin: 0 auto 25px auto;
+        }
+
+        .badge-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .pill-badge {
+            background: rgba(0, 242, 254, 0.12);
+            border: 1px solid var(--border-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Cards & Layout */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2, .card h3, .card h4 {
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background-color: var(--bg-card);
+            border-left: 5px solid var(--primary);
+            border-radius: 12px;
+            padding: 22px;
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .split-layout { display: flex; gap: 25px; width: 100%; align-items: stretch; margin-bottom: 30px; }
+        .half-col {
+            flex: 1; background: var(--bg-card); border-radius: 16px;
+            padding: 25px; border: 1px solid var(--border-color);
+            display: flex; flex-direction: column;
+            box-shadow: var(--shadow);
+        }
+        .half-col h3 { font-size: 1.4rem; margin-top: 0; margin-bottom: 15px; color: var(--danger); }
+        .half-col.solution h3 { color: var(--accent); }
+        .half-col.budget h3 { color: var(--warning); }
+        .half-col p, .half-col ul { font-size: 1rem; line-height: 1.6; color: var(--text-muted); margin: 0; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--border-color); }
+        th { background-color: rgba(0, 242, 254, 0.15); color: var(--primary); font-size: 1rem; }
+        td { color: var(--text-muted); font-size: 0.95rem; }
+        .highlight-cell { color: var(--accent) !important; font-weight: 700; }
+
+        ul.custom-bullets { list-style: none; }
+        ul.custom-bullets li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+        ul.custom-bullets li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0; top: 0;
+            font-size: 1.1rem;
+        }
+
+        /* Detailed App Mockup Styling */
+        .app-view-container {
+            max-width: 520px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .app-header h2 { font-size: 1.25rem; margin: 0; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+
+        .header-badges { display: flex; gap: 6px; }
+        .badge { padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
+        .status-badge { background: rgba(0, 255, 135, 0.15); color: var(--accent); border: 1px solid rgba(0, 255, 135, 0.3); }
+        .seal-badge { background: rgba(0, 242, 254, 0.15); color: var(--primary); border: 1px solid rgba(0, 242, 254, 0.3); }
+
+        .section-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .sub-card {
+            background: var(--bg-inner-card);
+            padding: 14px;
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 15px;
+        }
+
+        .camera-feed {
+            width: 100%; height: 170px;
+            background: #000;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 0.85rem;
+            position: relative; overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .camera-feed span {
+            position: absolute; top: 8px; left: 8px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 3px 8px; border-radius: 6px;
+            font-size: 0.7rem; color: var(--accent); font-weight: bold;
+        }
+
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .telemetry-box {
+            background: var(--bg-inner-card);
+            padding: 10px 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+        .telemetry-box h3 { margin: 0 0 4px 0; font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; }
+        .telemetry-box p { margin: 0; font-size: 0.85rem; font-weight: bold; color: var(--primary); }
+
+        .delivery-log {
+            background: var(--bg-card);
+            padding: 10px; border-radius: 10px;
+            font-size: 0.85rem; color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+            line-height: 1.5;
+        }
+
+        .joystick-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 220px;
+            margin: 10px auto 0 auto;
+        }
+
+        .owner-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 10px 0;
+        }
+        .progress-tracker::before {
+            content: ''; position: absolute; top: 14px; left: 10%; right: 10%; height: 3px;
+            background: var(--border-subtle); z-index: 1;
+        }
+        .progress-line-fill {
+            position: absolute; top: 14px; left: 10%; width: 50%; height: 3px;
+            background: var(--primary); z-index: 2;
+        }
+        .step { position: relative; z-index: 3; text-align: center; font-size: 0.7rem; color: var(--text-muted); }
+        .step-icon {
+            width: 28px; height: 28px; border-radius: 50%; background: var(--bg-inner-card);
+            border: 2px solid var(--border-subtle); display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 4px auto; font-size: 0.75rem; font-weight: bold;
+        }
+        .step.active .step-icon { border-color: var(--primary); background: var(--primary); color: #060b14; }
+        .step.active { color: var(--text-main); font-weight: bold; }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group input {
+            width: 100%; padding: 10px 12px; background: var(--bg-inner-card);
+            border: 1px solid var(--border-subtle); border-radius: 10px;
+            color: var(--text-main); font-size: 0.9rem; box-sizing: border-box;
+        }
+        .form-group input:focus { outline: none; border-color: var(--primary); }
+
+        .btn-app {
+            background: var(--border-subtle); color: var(--text-main);
+            border: none; padding: 11px; font-size: 0.85rem;
+            font-weight: bold; border-radius: 12px; cursor: pointer; transition: all 0.2s;
+            width: 100%;
+        }
+        .btn-app:hover { opacity: 0.9; }
+        .btn-app:active { transform: scale(0.97); }
+        .btn-accent { background: var(--primary); color: #060b14; }
+        .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .btn-success { background: rgba(0, 255, 135, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+        .btn-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+
+        .otp-box {
+            display: flex; gap: 8px; align-items: center; justify-content: space-between;
+            background: #050914; padding: 10px; border-radius: 10px;
+            border: 1px dashed var(--border-subtle); margin-top: 10px;
+        }
+        .otp-code { font-family: monospace; font-size: 1.2rem; letter-spacing: 4px; color: var(--primary); font-weight: bold; }
+
+        .audit-trail {
+            max-height: 95px; overflow-y: auto; font-family: monospace;
+            font-size: 0.72rem; color: var(--text-muted); background: #050914;
+            padding: 8px; border-radius: 8px; border: 1px solid var(--border-subtle);
+        }
+        .audit-trail div { margin-bottom: 4px; }
+
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 25px; text-align: center;
+            color: var(--text-muted); font-size: 0.9rem; margin-top: auto;
+        }
+
+        @media (max-width: 900px) {
+            .split-layout { flex-direction: column; }
+            .nav-container { flex-direction: column; gap: 12px; }
+            .nav-slider-wrapper { width: 100%; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slidable Navigation Bar -->
+    <nav>
+        <div class="nav-container">
+            <a class="brand-logo" onclick="navigateTo('home')">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 220" text-rendering="geometricPrecision" shape-rendering="geometricPrecision">
+                  <defs>
+                    <linearGradient id="navCyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#00f2fe" />
+                      <stop offset="50%" stop-color="#00d2ff" />
+                      <stop offset="100%" stop-color="#00ff87" />
+                    </linearGradient>
+                    <linearGradient id="navNeonGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#00ff87" />
+                      <stop offset="100%" stop-color="#60efff" />
+                    </linearGradient>
+                  </defs>
+                  
+                  <g transform="translate(15, 10)">
+                    <polygon points="95,10 165,50 165,140 95,180 25,140 25,50" fill="#080e18" stroke="url(#navCyanGrad)" stroke-width="4" />
+                    <circle cx="95" cy="10" r="4.5" fill="#00f2fe" />
+                    <circle cx="165" cy="50" r="4.5" fill="#00f2fe" />
+                    <circle cx="165" cy="140" r="4.5" fill="#00f2fe" />
+                    <circle cx="95" cy="180" r="4.5" fill="#00f2fe" />
+                    <circle cx="25" cy="140" r="4.5" fill="#00f2fe" />
+                    <circle cx="25" cy="50" r="4.5" fill="#00f2fe" />
+                    
+                    <g transform="translate(95, 95)">
+                      <rect x="-12" y="-38" width="24" height="76" rx="6" fill="url(#navNeonGreen)" />
+                      <rect x="-38" y="-12" width="76" height="24" rx="6" fill="url(#navNeonGreen)" />
+                      <circle cx="0" cy="0" r="11" fill="#060b14" stroke="#00f2fe" stroke-width="3" />
+                      <circle cx="0" cy="0" r="5" fill="#ffffff" />
+                      <path d="M-30,0 L-14,0 L-7,-13 L0,13 L7,-13 L14,0 L30,0" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                  </g>
+
+                  <text x="200" y="118" font-family="'Segoe UI', system-ui, sans-serif" font-weight="900" font-size="88" fill="url(#navCyanGrad)" letter-spacing="3">MEDIBOT</text>
+                  <text x="205" y="162" font-family="'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="16" fill="url(#navNeonGreen)" letter-spacing="1.5">AUTONOMOUS EMERGENCY MEDICAL DELIVERY</text>
+                </svg>
+            </a>
+
+            <!-- Slidable Nav Links -->
+            <div class="nav-slider-wrapper">
+                <button class="slide-btn" onclick="slideNav(-1)" title="Slide Left">‹</button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a id="nav-home" class="active" onclick="navigateTo('home')">🏠 Home</a></li>
+                    <li><a id="nav-problem" onclick="navigateTo('problem')">⚠️ Problem &amp; Solution</a></li>
+                    <li><a id="nav-benefits" onclick="navigateTo('benefits')">✨ Benefits</a></li>
+                    <li><a id="nav-hardware" onclick="navigateTo('hardware')">🛠️ Hardware Specs</a></li>
+                    <li><a id="nav-architecture" onclick="navigateTo('architecture')">🌐 Architecture</a></li>
+                    <li><a id="nav-feasibility" onclick="navigateTo('feasibility')">📊 Feasibility &amp; Matrix</a></li>
+                    <li><a id="nav-budget" onclick="navigateTo('budget')">💰 Budget &amp; Upgrades</a></li>
+                    <li><a id="nav-owner" onclick="navigateTo('owner')">🎮 Owner Panel</a></li>
+                    <li><a id="nav-customer" onclick="navigateTo('customer')">🚑 MEDIBOT Delivery</a></li>
+                </ul>
+                <button class="slide-btn" onclick="slideNav(1)" title="Slide Right">›</button>
+            </div>
+
+            <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+        </div>
+    </nav>
+
+    <!-- Main Dynamic Content Container -->
+    <div class="main-container">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <div id="page-home" class="page-view active">
+            <div class="hero-banner">
+                <div class="logo-container-hero">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 220" width="100%" height="100%" text-rendering="geometricPrecision" shape-rendering="geometricPrecision">
+                      <defs>
+                        <linearGradient id="vibrantMedibotGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#00f2fe" />
+                          <stop offset="40%" stop-color="#00d2ff" />
+                          <stop offset="80%" stop-color="#00ff87" />
+                          <stop offset="100%" stop-color="#60efff" />
+                        </linearGradient>
+
+                        <linearGradient id="neonGreenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#00ff87" />
+                          <stop offset="100%" stop-color="#00e676" />
+                        </linearGradient>
+
+                        <linearGradient id="goldBadgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#ffcc00" />
+                          <stop offset="100%" stop-color="#ff7700" />
+                        </linearGradient>
+
+                        <linearGradient id="shieldDarkBg" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stop-color="#0e1726" />
+                          <stop offset="100%" stop-color="#040810" />
+                        </linearGradient>
+                      </defs>
+
+                      <g transform="translate(15, 10)">
+                        <polygon points="95,10 165,50 165,140 95,180 25,140 25,50" 
+                                 fill="url(#shieldDarkBg)" 
+                                 stroke="url(#vibrantMedibotGrad)" 
+                                 stroke-width="4.5" />
+                        
+                        <circle cx="95" cy="10" r="5" fill="#00f2fe" />
+                        <circle cx="165" cy="50" r="5" fill="#00f2fe" />
+                        <circle cx="165" cy="140" r="5" fill="#00f2fe" />
+                        <circle cx="95" cy="180" r="5" fill="#00f2fe" />
+                        <circle cx="25" cy="140" r="5" fill="#00f2fe" />
+                        <circle cx="25" cy="50" r="5" fill="#00f2fe" />
+
+                        <polygon points="95,22 153,55 153,135 95,168 37,135 37,55" 
+                                 fill="none" 
+                                 stroke="rgba(0, 242, 254, 0.45)" 
+                                 stroke-width="2" 
+                                 stroke-dasharray="8 5" />
+
+                        <g transform="translate(95, 95)">
+                          <rect x="-13" y="-39" width="26" height="78" rx="6" fill="url(#neonGreenGrad)" />
+                          <rect x="-39" y="-13" width="78" height="26" rx="6" fill="url(#neonGreenGrad)" />
+                          
+                          <circle cx="0" cy="0" r="12" fill="#040810" stroke="#00f2fe" stroke-width="3.5" />
+                          <circle cx="0" cy="0" r="5" fill="#ffffff" />
+
+                          <path d="M-30,0 L-14,0 L-7,-14 L0,14 L7,-14 L14,0 L30,0" 
+                                fill="none" 
+                                stroke="#ffffff" 
+                                stroke-width="3.2" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round" />
+                        </g>
+                      </g>
+
+                      <g transform="translate(205, 18)">
+                        <rect x="0" y="0" width="300" height="25" rx="12.5" fill="rgba(255, 183, 0, 0.15)" stroke="url(#goldBadgeGrad)" stroke-width="1.5" />
+                        <text x="15" y="17" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="900" fill="#ffcc00" letter-spacing="1.5">★ INSPIRE MANAK INNOVATION PROJECT</text>
+                      </g>
+
+                      <text x="200" y="100" 
+                            font-family="'Segoe UI', system-ui, sans-serif" 
+                            font-weight="900" 
+                            font-size="72" 
+                            fill="url(#vibrantMedibotGrad)" 
+                            letter-spacing="3">MEDIBOT</text>
+
+                      <text x="205" y="133" 
+                            font-family="'Segoe UI', system-ui, sans-serif" 
+                            font-weight="800" 
+                            font-size="13.5" 
+                            fill="url(#neonGreenGrad)" 
+                            letter-spacing="1.3">MOTORIZED AUTONOMOUS EMERGENCY DELIVERY INNOVATION BASED ON TRANSPORT</text>
+
+                      <line x1="205" y1="151" x2="1040" y2="151" stroke="rgba(0, 242, 254, 0.45)" stroke-width="2.5" />
+                      <circle cx="1040" cy="151" r="4.5" fill="#00ff87" />
+
+                      <text x="205" y="177" 
+                            font-family="'Segoe UI', system-ui, sans-serif" 
+                            font-weight="700" 
+                            font-size="13.5" 
+                            fill="#cbd5e1" 
+                            letter-spacing="1">DESIGNED &amp; BUILT BY: <tspan fill="#ffffff" font-weight="900">MUKKUL PRIYAN KR</tspan></text>
+                    </svg>
+                </div>
+
+                <p class="description">An autonomous, all-terrain medical delivery rover engineered for last-mile emergency medicine dispatch in rural areas, towns, and residential colonies with secure RFID authentication.</p>
+                
+                <div class="badge-bar">
+                    <span class="pill-badge">⚡ Arduino Mega Core</span>
+                    <span class="pill-badge">🔒 RFID Smart Vault</span>
+                    <span class="pill-badge">📡 Live GPS Telemetry</span>
+                    <span class="pill-badge">🛠️ Hybrid Steel Chassis</span>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>💡 Project Abstract</h3>
+                <p>MEDIBOT solves critical delays in emergency medicine access across semi-urban and rural areas during late hours or severe weather. Combining high-torque drive motors, a heavy-duty hybrid chassis, real-time IoT tracking, and an RFID-locked compartment, MEDIBOT safely transports medical supplies directly to patient doorsteps without human intervention.</p>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 2: PROBLEM & SOLUTION ================= -->
+        <div id="page-problem" class="page-view">
+            <div class="split-layout">
+                <div class="half-col">
+                    <h3>The Emergency Delivery Crisis</h3>
+                    <ul class="custom-bullets">
+                        <li><strong>Critical Time Delay:</strong> Patients in villages, small towns, and residential colonies struggle to get emergency medicines during late-night hours.</li>
+                        <li><strong>Lack of Transport:</strong> Delivery services are often unavailable during severe weather, late nights, or in remote roads.</li>
+                        <li><strong>Transit Security:</strong> High risk of medicine theft, mishandling, or contamination during manual transit.</li>
+                    </ul>
+                </div>
+                <div class="half-col solution">
+                    <h3>The MEDIBOT Solution</h3>
+                    <ul class="custom-bullets">
+                        <li><strong>Direct Autonomous Dispatch:</strong> Travels directly from local pharmacies/dispensaries straight to patient doorsteps.</li>
+                        <li><strong>All-Weather &amp; All-Terrain:</strong> Designed to navigate gravel, unpaved colony roads, and speed bumps without human assistance.</li>
+                        <li><strong>RFID Smart Vault:</strong> Locked compartment ensures medicines are untouched until opened by the patient's verified RFID card.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 3: KEY BENEFITS ================= -->
+        <div id="page-benefits" class="page-view">
+            <div class="card" style="margin-bottom: 25px;">
+                <h2>✨ Key Benefits &amp; Social Impact</h2>
+                <p>MEDIBOT offers key advantages over traditional delivery methods:</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4 style="color: #00ff87;">1. 24/7 Availability</h4>
+                    <p>Operates round-the-clock without driver fatigue, solving late-night emergency medicine access in rural and semi-urban areas.</p>
+                </div>
+                <div class="card">
+                    <h4 style="color: #00f2fe;">2. Theft-Proof Protection</h4>
+                    <p>Servo-driven electronic lock stays secured. Compartment unlocks strictly upon scanning the customer's RFID key card.</p>
+                </div>
+                <div class="card">
+                    <h4 style="color: #ffb700;">3. All-Terrain Navigation</h4>
+                    <p>High-torque motors and heavy chassis conquer uneven roads, gravel paths, and colony lanes regular vehicles avoid.</p>
+                </div>
+                <div class="card">
+                    <h4 style="color: #e0aaff;">4. Zero Human Contact</h4>
+                    <p>Eliminates viral contamination and cross-infection risks during epidemics or when delivering sensitive medical supplies.</p>
+                </div>
+                <div class="card">
+                    <h4 style="color: #ff3366;">5. Real-Time Telemetry</h4>
+                    <p>Both pharmacy owners and patients can view live road position, battery health, and estimated arrival time on the web platform.</p>
+                </div>
+                <div class="card">
+                    <h4 style="color: #ffd166;">6. Eco-Friendly &amp; Low Cost</h4>
+                    <p>Rechargeable battery electric drive eliminates fuel expenses and carbon emissions, drastically reducing delivery costs.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 4: HARDWARE SPECS ================= -->
+        <div id="page-hardware" class="page-view">
+            <div class="card" style="margin-bottom: 25px;">
+                <h2>🛠️ Complete Hardware Component Matrix</h2>
+                <p>System components selected for durability, real-time control, and maximum cost efficiency:</p>
+            </div>
+
+            <div class="card-grid" style="margin-bottom: 30px;">
+                <div class="card">
+                    <h4>Microcontroller Core</h4>
+                    <ul class="custom-bullets">
+                        <li>Arduino Mega 2560 (Main Logic)</li>
+                        <li>ESP8266 / ESP32 (Wi-Fi/IoT)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Drivetrain &amp; Motors</h4>
+                    <ul class="custom-bullets">
+                        <li>12V High-Torque Geared DC Motors</li>
+                        <li>BTS7960 / L298N Motor Drivers</li>
+                        <li>All-Terrain Rubber Wheels</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Security Vault System</h4>
+                    <ul class="custom-bullets">
+                        <li>MFRC522 RFID Reader Module</li>
+                        <li>High-Torque Servo Latch (MG996R)</li>
+                        <li>RFID Smart Cards / Key Fobs</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Sensors &amp; Navigation</h4>
+                    <ul class="custom-bullets">
+                        <li>HC-SR04 Ultrasonic Sensors</li>
+                        <li>IR Array Sensors (Path Tracking)</li>
+                        <li>NEO-6M GPS Module</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Chassis &amp; Structure</h4>
+                    <ul class="custom-bullets">
+                        <li>1.0 mm Mild Steel Base Plate</li>
+                        <li>Modular Weatherproof Body</li>
+                        <li>Mounting Brackets &amp; Hardware</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Power &amp; Display Interface</h4>
+                    <ul class="custom-bullets">
+                        <li>12V Rechargeable Battery Pack</li>
+                        <li>16x2 I2C LCD Status Display</li>
+                        <li>Voltage Regulators &amp; Switches</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 5: ARCHITECTURE ================= -->
+        <div id="page-architecture" class="page-view">
+            <div class="card" style="margin-bottom: 25px;">
+                <h2>🌐 System Architecture &amp; Web Integration</h2>
+                <p>3-Layer hardware architecture synchronized with an online portal:</p>
+            </div>
+
+            <div class="card-grid" style="margin-bottom: 30px;">
+                <div class="card">
+                    <h4 style="color: var(--primary);">1. Input Layer</h4>
+                    <ul class="custom-bullets">
+                        <li>Ultrasonic &amp; IR Sensors (Obstacle detection)</li>
+                        <li>MFRC522 RFID Reader (Authentication)</li>
+                        <li>NEO-6M GPS (Coordinates)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--warning);">2. Processing Core</h4>
+                    <ul class="custom-bullets">
+                        <li>Arduino Mega 2560 (Real-time motor &amp; lock control)</li>
+                        <li>ESP8266/ESP32 (IoT web communications)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--accent);">3. Output Layer</h4>
+                    <ul class="custom-bullets">
+                        <li>BTS7960 High-Power Drivers</li>
+                        <li>High-Torque Servo Vault Lock</li>
+                        <li>16x2 LCD Live Display</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 6: FEASIBILITY & MATRIX ================= -->
+        <div id="page-feasibility" class="page-view">
+            <div class="card" style="margin-bottom: 25px;">
+                <h2>📊 Innovation Comparison Matrix</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Standard Delivery Bots</th>
+                            <th>Medical Drones</th>
+                            <th style="color: var(--accent);">MEDIBOT (Our Solution)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Terrain Support</strong></td>
+                            <td>Smooth indoor floors only</td>
+                            <td>Airborne (Weather restricted)</td>
+                            <td class="highlight-cell">Rugged outdoor colony roads</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cargo Security</strong></td>
+                            <td>Open tray / Simple latch</td>
+                            <td>Drop-off payload (Unsecured)</td>
+                            <td class="highlight-cell">RFID Smart Lock Vault</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Frame Durability</strong></td>
+                            <td>Plastic / Acrylic</td>
+                            <td>Lightweight Carbon Fiber</td>
+                            <td class="highlight-cell">Hybrid Steel Base &amp; Rugged Body</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deployment Cost</strong></td>
+                            <td>Moderate</td>
+                            <td>Very High (Lakhs)</td>
+                            <td class="highlight-cell">Affordable &amp; Scalable</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 7: BUDGET & FUTURE UPGRADES ================= -->
+        <div id="page-budget" class="page-view">
+            <div class="card" style="margin-bottom: 25px;">
+                <h2>💰 Budget Breakdown &amp; Future Roadmap</h2>
+                <p>Cost-optimized bill of materials alongside Version 2.0 system expansion plans:</p>
+            </div>
+
+            <div class="split-layout">
+                <div class="half-col budget">
+                    <h3>Optimized Budget Breakdown</h3>
+                    <ul class="custom-bullets">
+                        <li><strong>Hybrid Chassis Base &amp; Frame:</strong> ~₹1,300</li>
+                        <li><strong>Motors &amp; High-Torque Drivers:</strong> ~₹2,200</li>
+                        <li><strong>Arduino Mega, ESP &amp; Sensors:</strong> ~₹2,100</li>
+                        <li><strong>RFID Vault &amp; Servo Latch:</strong> ~₹300</li>
+                        <li><strong>Battery &amp; Power Regulation:</strong> ~₹1,500</li>
+                    </ul>
+                    <div style="margin-top: 18px; padding: 12px; background: rgba(0, 255, 135, 0.12); border: 1px solid var(--accent); border-radius: 10px; text-align: center;">
+                        <strong style="color: var(--accent); font-size: 1.05rem;">Total Cost: ~₹7,400 (Highly Cost-Efficient)</strong>
+                    </div>
+                </div>
+
+                <div class="half-col solution">
+                    <h3>Future Upgrades (Version 2.0)</h3>
+                    <ul class="custom-bullets">
+                        <li><strong>AI Computer Vision:</strong> Camera-based lane &amp; pothole detection.</li>
+                        <li><strong>LoRaWAN Module:</strong> Autonomous communication in non-cellular rural zones.</li>
+                        <li><strong>Solar Charging Dock:</strong> Self-charging stations at PHC centers.</li>
+                        <li><strong>Temperature Controlled Vault:</strong> For insulin &amp; vaccine transport.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 8: OWNER PANEL ================= -->
+        <div id="page-owner" class="page-view">
+            <div class="app-view-container">
+                <div class="app-header">
+                    <h2>🎮 MEDIBOT Command</h2>
+                    <div class="header-badges">
+                        <span class="badge seal-badge">Bot #01</span>
+                        <span class="badge status-badge">● System Online</span>
+                    </div>
+                </div>
+
+                <div class="sub-card">
+                    <div class="section-title">360° Live Surround View</div>
+                    <div class="camera-feed">
+                        <span>LIVE STREAM</span>
+                        [ 360 Camera Feed Active ]
+                    </div>
+                </div>
+
+                <div class="telemetry-grid">
+                    <div class="telemetry-box">
+                        <h3>Battery</h3>
+                        <p style="color: var(--accent);">12.6V (88%)</p>
+                    </div>
+                    <div class="telemetry-box">
+                        <h3>Speed</h3>
+                        <p>1.2 m/s</p>
+                    </div>
+                    <div class="telemetry-box">
+                        <h3>Obstacle</h3>
+                        <p style="color: var(--warning);">Path Clear</p>
+                    </div>
+                    <div class="telemetry-box">
+                        <h3>Signal</h3>
+                        <p style="color: var(--primary);">-64 dBm</p>
+                    </div>
+                </div>
+
+                <div class="sub-card">
+                    <div class="section-title">Current Target Destination</div>
+                    <div class="delivery-log">
+                        <strong>House / Room:</strong> <span id="ownerTargetRoom">Room 304</span><br>
+                        <strong>Phone:</strong> <span id="ownerTargetPhone">+91 98765 43210</span><br>
+                        <strong>Vault Status:</strong> <span style="color: var(--accent);" id="ownerVaultStatus">Locked & Secure</span>
+                    </div>
+                </div>
+
+                <div class="sub-card">
+                    <div class="section-title">Manual Remote Override Drive</div>
+                    <div class="joystick-panel">
+                        <div></div>
+                        <button class="btn-app" onclick="driveBot('FORWARD')">▲</button>
+                        <div></div>
+                        <button class="btn-app" onclick="driveBot('LEFT')">◄</button>
+                        <button class="btn-app btn-warning" onclick="driveBot('HOLD')">⏹</button>
+                        <button class="btn-app" onclick="driveBot('RIGHT')">►</button>
+                        <div></div>
+                        <button class="btn-app" onclick="driveBot('REVERSE')">▼</button>
+                        <div></div>
+                    </div>
+                </div>
+
+                <div class="sub-card">
+                    <div class="section-title">Owner Override Controls</div>
+                    <div class="owner-controls">
+                        <button class="btn-app btn-success" onclick="ownerAction('Force Unlock Vault')">Unlock Vault</button>
+                        <button class="btn-app btn-danger" onclick="ownerAction('Emergency Stop')">Emergency Stop</button>
+                        <button class="btn-app" onclick="ownerAction('Return to Base')">Return to Base</button>
+                        <button class="btn-app" onclick="ownerAction('System Reboot')">Reboot System</button>
+                    </div>
+                </div>
+
+                <div class="sub-card" style="margin-bottom: 0;">
+                    <div class="section-title">System Audit Log</div>
+                    <div class="audit-trail" id="auditLog">
+                        <div>[10:14:02] System Online & initialized.</div>
+                        <div>[10:14:15] Vault status: Locked & Secure.</div>
+                        <div>[10:15:30] Obstacle warning status: Path Clear.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 9: CUSTOMER / DELIVERY ================= -->
+        <div id="page-customer" class="page-view">
+            <div class="app-view-container">
+                <div class="app-header">
+                    <h2>MEDIBOT Delivery</h2>
+                    <div class="header-badges">
+                        <span class="badge seal-badge" id="sealStatus">🔒 Vault Sealed</span>
+                        <span class="badge status-badge">● Auto Mode</span>
+                    </div>
+                </div>
+
+                <div class="sub-card">
+                    <div class="section-title">360° Live Camera Feed</div>
+                    <div class="camera-feed">
+                        <span>LIVE (360° View)</span>
+                        [ Camera Feed Stream Simulation ]
+                    </div>
+                </div>
+
+                <div class="sub-card">
+                    <div class="section-title">Live Delivery Status (ETA: ~4 Mins)</div>
+                    <div class="progress-tracker">
+                        <div class="progress-line-fill"></div>
+                        <div class="step active">
+                            <div class="step-icon">✓</div>
+                            Dispatched
+                        </div>
+                        <div class="step active">
+                            <div class="step-icon">🚚</div>
+                            En Route
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">📍</div>
+                            Arrived
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">🔓</div>
+                            Unlocked
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-card">
+                    <div class="section-title">Patient Destination Input</div>
+                    <form onsubmit="handleDispatch(event)">
+                        <div class="form-group">
+                            <label for="houseNo">House / Room Number</label>
+                            <input type="text" id="houseNo" placeholder="e.g., Room 304 or House #12" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNo">Patient Phone Number</label>
+                            <input type="tel" id="phoneNo" placeholder="e.g., +91 98765 43210" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rxFile">Upload Digital Prescription (Optional)</label>
+                            <input type="file" id="rxFile" accept="image/*,.pdf">
+                        </div>
+                        <button type="submit" class="btn-app btn-accent">Lock Medicine & Dispatch</button>
+                    </form>
+                </div>
+
+                <div class="sub-card">
+                    <div class="section-title">Doorstep Smart Vault Release</div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 8px 0;">Use your assigned RFID card or enter your dynamic OTP at the keypad:</p>
+                    <div class="otp-box">
+                        <span>Vault Smart OTP:</span>
+                        <span class="otp-code" id="otpDisplay">8492</span>
+                        <button style="width: auto; padding: 6px 12px; font-size: 0.75rem;" class="btn-app" onclick="generateNewOTP()">Refresh</button>
+                    </div>
+                    <button class="btn-app btn-success" style="margin-top: 10px;" onclick="unlockVaultRemote()">
+                        App One-Touch Vault Unlock
+                    </button>
+                </div>
+
+                <div class="sub-card" style="margin-bottom: 0;">
+                    <div class="section-title">Safety & Emergency Actions</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-app btn-danger" onclick="pauseDelivery()">Pause Delivery</button>
+                        <button class="btn-app" onclick="triggerBuzzer()">Chirp Rover Horn</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 MEDIBOT | INSPIRE MANAK Innovation Portal | Designed &amp; Built by Mukkul Priyan KR</p>
+    </footer>
+
+    <!-- JavaScript Routing & Controllers -->
+    <script>
+        function slideNav(direction) {
+            const navLinks = document.getElementById('navLinks');
+            const scrollAmount = 220;
+            navLinks.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.getElementById('page-' + pageId).classList.add('active');
+            const activeNav = document.getElementById('nav-' + pageId);
+            if (activeNav) {
+                activeNav.classList.add('active');
+                activeNav.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+        }
+
+        function logEvent(message) {
+            const log = document.getElementById('auditLog');
+            if (log) {
+                const time = new Date().toLocaleTimeString();
+                log.innerHTML = `<div>[${time}] ${message}</div>` + log.innerHTML;
+            }
+        }
+
+        function ownerAction(actionName) {
+            alert("Owner Command Executed: " + actionName);
+            logEvent("Owner Command: " + actionName);
+            if(actionName === 'Force Unlock Vault' || actionName === 'Unlock Vault') {
+                document.getElementById('ownerVaultStatus').innerText = "Unlocked by Owner";
+                document.getElementById('sealStatus').innerText = "🔓 Vault Unlocked";
+            }
+        }
+
+        function driveBot(direction) {
+            logEvent("Manual Drive Action: " + direction);
+        }
+
+        function handleDispatch(event) {
+            event.preventDefault();
+            const house = document.getElementById('houseNo').value;
+            const phone = document.getElementById('phoneNo').value;
+            
+            alert("Medicine Locked securely! Navigating to: " + house + " (Contact: " + phone + ")");
+            document.getElementById('ownerTargetRoom').innerText = house;
+            document.getElementById('ownerTargetPhone').innerText = phone;
+            document.getElementById('ownerVaultStatus').innerText = "Locked & Secure";
+            document.getElementById('sealStatus').innerText = "🔒 Vault Sealed";
+            logEvent("Medicine Locked securely! Navigating to: " + house);
+        }
+
+        function generateNewOTP() {
+            const newOTP = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('otpDisplay').innerText = newOTP;
+            logEvent("New OTP Generated: " + newOTP);
+        }
+
+        function unlockVaultRemote() {
+            alert("Authentication Granted! MG996R Vault Lock Opened.");
+            const seal = document.getElementById('sealStatus');
+            seal.innerText = "🔓 Vault Unlocked";
+            seal.style.background = "rgba(34, 197, 94, 0.2)";
+            seal.style.color = "var(--accent)";
+            document.getElementById('ownerVaultStatus').innerText = "Unlocked by Patient";
+            logEvent("Vault remotely unlocked by patient.");
+        }
+
+        function pauseDelivery() {
+            alert("Emergency Signal Dispatched: Delivery Paused.");
+            logEvent("Delivery paused by user.");
+        }
+
+        function triggerBuzzer() {
+            alert("Rover Buzzer Sounded!");
+            logEvent("Buzzer alert triggered.");
+        }
+    </script>
+</body>
+</html>
